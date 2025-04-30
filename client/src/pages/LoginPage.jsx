@@ -7,8 +7,8 @@ import Input from "../components/Input";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  
+    const [password, setPassword] = useState("");
+
     const isLoading = false;
 
     const handleLogin = (e) => {
