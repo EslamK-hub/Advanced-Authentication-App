@@ -2,18 +2,15 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/authStore";
+import { toast } from "react-hot-toast";
 
 export default function EmailVerificationPage() {
     const [code, setCode] = useState(["", "", "", "", "", ""]);
     const inputRefs = useRef([]);
     const navigate = useNavigate();
-    const isLoading = false;
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const verificationCode = code.join("");
-        console.log("Verification code submitted:", verificationCode);
-    };
+    const {error, isLoading, verifyEmail} = useAuthStore()
 
     const handleChange = (index, value) => {
         const newCode = [...code];
@@ -45,6 +42,18 @@ export default function EmailVerificationPage() {
     const handleKeyDown = (index, e) => {
         if (e.key === "Backspace" && !code[index] && index > 0) {
             inputRefs.current[index - 1].focus();
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const verificationCode = code.join("");
+        try {
+            await verifyEmail(verificationCode);
+            navigate("/");
+            toast.success("Email verified successfully!");
+        } catch (error) { 
+            console.log(error);
         }
     };
 
@@ -85,6 +94,7 @@ export default function EmailVerificationPage() {
                             />
                         ))}
                     </div>
+                    {error && <p className="text-red-500 font-semibold mt-2">{ error }</p>}
                     <motion.button
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
