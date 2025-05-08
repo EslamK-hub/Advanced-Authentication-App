@@ -8,7 +8,10 @@ import { useAuthStore } from "./store/authStore";
 import { useEffect } from "react";
 import DashboardPage from "./pages/DashboardPage";
 import LoadingSpinner from "./components/LoadingSpinner";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
+// This component protects routes by ensuring the user is authenticated and verified.
 const ProtectedRoute = ({ children }) => {
     const { isAuthenticated, user } = useAuthStore();
     if (!isAuthenticated) {
@@ -36,7 +39,7 @@ function App() {
         checkAuth();
     }, [checkAuth]);
 
-    if (isCheckingAuth) return <LoadingSpinner/>
+    if (isCheckingAuth) return <LoadingSpinner />;
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center relative overflow-hidden">
@@ -89,6 +92,22 @@ function App() {
                 <Route
                     path="/verify-email"
                     element={<EmailVerificationPage />}
+                ></Route>
+                <Route
+                    path="/forgot-password"
+                    element={
+                        <RedirectAuthenticatedUser>
+                            <ForgotPasswordPage />
+                        </RedirectAuthenticatedUser>
+                    }
+                ></Route>
+                <Route
+                    path="/reset-password/:token"
+                    element={
+                        <RedirectAuthenticatedUser>
+                            <ResetPasswordPage />
+                        </RedirectAuthenticatedUser>
+                    }
                 ></Route>
             </Routes>
             <Toaster></Toaster>
