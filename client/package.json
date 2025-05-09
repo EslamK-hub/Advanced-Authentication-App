@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.4",
+    "auth": "file:..",
     "axios": "^1.9.0",
     "client": "file:",
     "framer-motion": "^12.9.1",
