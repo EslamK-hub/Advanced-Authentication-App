@@ -109,6 +109,7 @@ function App() {
                         </RedirectAuthenticatedUser>
                     }
                 ></Route>
+                <Route path="*" element={<Navigate to="/" replace />}></Route>
             </Routes>
             <Toaster></Toaster>
         </div>
